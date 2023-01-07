@@ -21,7 +21,7 @@ fn main() {
     }
     // using if in lket statements
     let condition: bool = true;
-    let number = if condition {5} else {6};
+    let _number = if condition {5} else {6};
     // loop
     let mut counter = 0;
 
