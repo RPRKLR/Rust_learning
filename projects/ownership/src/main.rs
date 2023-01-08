@@ -46,11 +46,70 @@ fn main() {
 
     let s1 = String::from("Hello");
 
-    let (s2, len) = calculate_length(s1);
+    // let (s2, len) = calculate_length(s1);
 
-    println!("The length of '{}' is {}", s2, len);
+    // println!("The length of '{}' is {}", s2, len);
+
+    // rerferences and borrowing
+
+    let s1 = String::from("Hello");
+    let len = calculate_length(&s1);
+
+    println!("The length of '{}' is {}.", s1, len);
+
+    let mut s = String::from("hello");
+
+    change(&mut s);
+
+    //valid multiple mutable references in curly braces
+
+    let mut s = String::from("Hello");
+    {
+        let r1 = &mut s;
+    }
+    let r2 = &mut s;
+
+    //mutable and immutable references
+    //will not work
+    // let r1 = &s; // ok
+    // let r2 = &s; // ok
+    // let r3 = &mut s; // big problem
+
+    // println!("{}, {}, and {}", r1, r2 ,r3);
+
+    // Will work, because it changes, after we used the previous references
+    // The scopes do not overlap
+    let r1 = &s; // ok
+    let r2 = &s; // ok
+    println!("{}, {}", r1, r2);
+    let r3 = &mut s;
+    println!("{}", r3);
+
+    // Dangling references
+    let reference_to_nothing = dangle();
 }
 
+//do not return reference, just return the value
+fn dangle() -> String {
+    let s = String::from("Hello");
+    
+    s
+}
+
+//will not work because of dangling reference
+// fn dangle() -> &String {
+//     let s = String::from("Hello");
+
+//     &s
+// }
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+
+fn calculate_length(s: &String) -> usize {
+    s.len()
+}
 
 fn takes_ownership(some_string: String) {
     println!("{}", some_string);
@@ -69,8 +128,8 @@ fn takes_and_gives_back(a_string: String) -> String {
     a_string
 }
 
-fn calculate_length(s: String) -> (String, usize) {
-    let length = s.len();
+// fn calculate_length(s: String) -> (String, usize) {
+//     let length = s.len();
 
-    (s, length)
-}
+//     (s, length)
+// }
