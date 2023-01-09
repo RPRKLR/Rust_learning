@@ -2,7 +2,7 @@ fn main() {
     let _s = "Hello";
     let mut string = String::from("Hello");
 
-    string.push_str(", world!"); 
+    string.push_str(", world!");
 
     println!("{}", string);
 
@@ -42,7 +42,7 @@ fn main() {
 
     let s3 = takes_and_gives_back(s2);
 
-    // returning ownership of parameters 
+    // returning ownership of parameters
 
     let s1 = String::from("Hello");
 
@@ -87,12 +87,58 @@ fn main() {
 
     // Dangling references
     let reference_to_nothing = dangle();
+
+    // The slice type
+
+    let s = String::from("hello world");
+    let hello = &s[0..5];
+    let world = &s[6..11];
+
+    // If the range starts from 0 we do not need to give the start index
+    let slice = &s[0..2];
+    let slice = &s[..2];
+    // If the range ends at the last element we do not need the last index
+    let len = s.len();
+    let slice = &s[3..len];
+    let slice = &s[3..];
+    //if it's go from 0 to end
+    let slice = &s[..];
+
+    let mut s = String::from("Hello world");
+    let world = first_word(&s);
+
+    // s.clear(); will drop an error to world variable, because the s variable is different, and have a reference to it.
+
+    println!("The first world is: {}", world);
+}
+
+// With slices
+fn first_word(s: &String) -> &str {
+    let bytes = s.as_bytes();
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[..i];
+        }
+    }
+    &s[..]
+}
+
+// Without slices
+fn first_word_without_slice(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return i;
+        }
+    }
+    s.len()
 }
 
 //do not return reference, just return the value
 fn dangle() -> String {
     let s = String::from("Hello");
-    
+
     s
 }
 
