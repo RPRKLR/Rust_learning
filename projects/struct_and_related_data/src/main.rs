@@ -19,6 +19,8 @@ fn main() {
         email: String::from("canwestoptheemails@example.com"),
         ..user1
     };
+
+    
 }
 
 struct User {
